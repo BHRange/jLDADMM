@@ -6,6 +6,7 @@ import models.GibbsSamplingLDA_Inf;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 
+import utility.MTRandom;
 import utility.CmdArgs;
 import eval.ClusteringEval;
 
@@ -16,8 +17,8 @@ import eval.ClusteringEval;
  * 
  * @author: Dat Quoc Nguyen
  * 
- * @version: 1.0.2
- * 
+ * @version: 1.0.3 
+ * jLDADMM v1.0.3 incorporates the following change: Adding a random-seed option "-seed" for reproducibility
  */
 public class jLDADMM
 {
@@ -28,6 +29,10 @@ public class jLDADMM
 		try {
 
 			parser.parseArgument(args);
+
+			if (cmdArgs.seed > 0){
+				MTRandom.setSeed(cmdArgs.seed);
+			}
 
 			if (cmdArgs.model.equals("LDA")) {
 				GibbsSamplingLDA lda = new GibbsSamplingLDA(cmdArgs.corpus,

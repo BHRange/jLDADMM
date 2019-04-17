@@ -19,13 +19,13 @@ Bug reports, comments and suggestions about jLDADMM are highly appreciated. As a
 
 This section describes the usage of jLDADMM in command line or terminal, using a  pre-compiled file named `jLDADMM.jar`. Here, it is supposed that Java is already set to run in command line or terminal (e.g. adding Java to the environment variable `path` in Windows OS).
 
-Users can find the pre-compiled file `jLDADMM.jar` and source codes in folders `jar` and `src`, respectively. The users can recompile the source codes by simply running `ant` (it is also expected that `ant` is already installed). In addition, the users can find input examples in `test` folder.
+Users can find the pre-compiled file `jLDADMM.jar` and source codes in folders `jar` and `src`, respectively. **The users can recompile the source codes by simply running `ant` (it is also expected that `ant` is already installed)**. In addition, the users can find input examples in `test` folder.
 
 **File format of input corpus:**  Similar to file `corpus.txt`  in the `test` folder, jLDADMM assumes that each line in the input corpus represents a document. Here, a document is a sequence of words/tokens separated by white space characters. The users should preprocess the input corpus before training the LDA or DMM topic  models, for example: down-casing, removing non-alphabetic characters and stop-words, removing words shorter than 3 characters and words appearing less than a certain times.  
 
 **Now, we can train LDA or DMM by executing:**
 
-	$ java [-Xmx1G] -jar jar/jLDADMM.jar –model <LDA_or_DMM> -corpus <Input_corpus_file_path> [-ntopics <int>] [-alpha <double>] [-beta <double>] [-niters <int>] [-twords <int>] [-name <String>] [-sstep <int>]
+	$ java [-Xmx1G] -jar jar/jLDADMM.jar –model <LDA_or_DMM> -corpus <Input_corpus_file_path> [-ntopics <int>] [-alpha <double>] [-beta <double>] [-niters <int>] [-twords <int>] [-name <String>] [-sstep <int>] [-seed <int>]
 
 where parameters in [ ] are optional.
 
@@ -46,6 +46,8 @@ where parameters in [ ] are optional.
 `-name <String>`: Specify a name to the topic modeling experiment. The default value is `model`.
 
 `-sstep <int>`: Specify a step to save the sampling outputs. The default value is 0 (i.e. only saving the output from the last sample).
+
+`-seed <int>`: Specify the random _seed_ for the Gibbs sampler. Default is 0, which will use the clock.
 
 **Examples:**
 
@@ -81,21 +83,21 @@ The above commands will produce the clustering scores for files `testLDA.theta` 
 
 will produce the clustering scores for all document-to-topic distribution files with their names ending in `theta`. In this case, they are are `testLDA.theta` and `testDMM.theta`. The command also provides the mean and standard deviation of the clustering scores.
 
-To improve evaluation scores, the users might consider combining the LDA and DMM topic models with word embeddings [3] \(source codes [HERE](https://github.com/datquocnguyen/LFTM)\).
+To improve evaluation scores, the users might consider using [latent feature topic models LF-LDA and LF-DMM](https://github.com/datquocnguyen/LFTM) [3], which extend the LDA and DMM topic models with word embeddings. 
 
 ### Topic inference on new/unseen corpus
 
 To infer topics on a new/unseen corpus using a pre-trained LDA/DMM topic model, we perform:
 
-`$ java -jar jar/jLDADMM.jar -model <LDAinf_or_DMMinf> -paras <Hyperparameter_file_path> -corpus <Unseen_corpus_file_path> [-niters <int>] [-twords <int>] [-name <String>] [-sstep <int>]`
+	$ java -jar jar/jLDADMM.jar -model <LDAinf_or_DMMinf> -paras <Hyperparameter_file_path> -corpus <Unseen_corpus_file_path> [-niters <int>] [-twords <int>] [-name <String>] [-sstep <int>] [-seed <int>]
 
 * `-paras`: Specify the path to the hyper-parameter file produced by the pre-trained LDA/DMM topic model.
 
 <b>Examples:</b>
 
-`$ java -jar jar/jLDADMM.jar -model LDAinf -paras test/testLDA.paras -corpus test/unseenTest.txt -niters 100 -name testLDAinf`
+	$ java -jar jar/jLDADMM.jar -model LDAinf -paras test/testLDA.paras -corpus test/unseenTest.txt -niters 100 -name testLDAinf
 
-`$ java -jar jar/jLDADMM.jar -model DMMinf -paras test/testDMM.paras -corpus test/unseenTest.txt -niters 100 -name testDMMinf`
+	$ java -jar jar/jLDADMM.jar -model DMMinf -paras test/testDMM.paras -corpus test/unseenTest.txt -niters 100 -name testDMMinf
 
 ### References
 

@@ -29,6 +29,9 @@ public class CmdArgs
 	@Option(name = "-name", usage = "Specify a name to topic modeling experiment")
 	public String expModelName = "model";
 
+	@Option(name = "-seed", usage = "Specify a random seed for reproducibility")
+	public int seed = 0;
+
 	@Option(name = "-initFile")
 	public String initTopicAssgns = "";
 
